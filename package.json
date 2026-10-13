@@ -4,6 +4,7 @@
   "packageManager": "pnpm@10.29.3",
   "scripts": {
     "experiment": "node scripts/experiment.mjs",
+    "build:index": "node scripts/build-lab-index.mjs",
     "build": "node scripts/build-experiments.mjs",
     "check": "node scripts/check-experiments.mjs"
   },

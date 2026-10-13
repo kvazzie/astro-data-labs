@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -116,60 +116,60 @@
 </head>
 <body>
   <main>
-    <p class="eyebrow">PROTOTYPE · выбросить после ответа</p>
-    <h1>Astro content<br>под SQL-микроскопом</h1>
-    <p class="lede">Загрузите общий content store Astro, превратите внутренние коллекции в одну аналитическую таблицу и исследуйте их локально с DuckDB — без сервера и без отправки контента наружу.</p>
+    <p class="eyebrow">Exploring · read-only research artifact</p>
+    <h1>Astro content<br>under a SQL microscope</h1>
+    <p class="lede">Load Astro's content store, project ordinary collections into one SQL table, and inspect them with DuckDB in this browser tab. Selected files stay local and their contents are never modified.</p>
 
     <div class="question">
-      <strong>Вопрос прототипа</strong>
-      Удобен ли шов <code>.astro/data-store.json → devalue.parse() → плоские строки → DuckDB</code> для инспекции всех коллекций, поиска расхождений схемы и связей между записями? Допущение: внутренний файл Astro — источник для dev-инструмента, а не стабильный публичный API.
+      <strong>Experiment question</strong>
+      Is the path <code>.astro/data-store.json → devalue.parse() → rows → DuckDB</code> useful for inspecting collections, field differences, and references? Direct access to Astro's generated store depends on its internal format. This Experiment makes no compatibility promise.
     </div>
 
     <div class="launch-warning" id="launch-warning">
-      <strong>Интерактивный модуль не загружен</strong>
-      Не открывайте этот HTML напрямую. Выполните <code>pnpm dev</code> и используйте адрес <code>http://127.0.0.1:5173/</code>.
+      <strong>Interactive module did not load</strong>
+      Run <code>pnpm dev</code> and open <code>http://127.0.0.1:5173/</code> so the browser can load the module and runtime assets.
     </div>
 
     <div class="layout">
       <div>
         <section class="panel" aria-labelledby="state-title">
-          <h2 id="state-title">Текущее состояние</h2>
+          <h2 id="state-title">Current state</h2>
           <div class="status-grid" id="status-grid"></div>
-          <div id="notice" class="notice">Начните с демонстрационных коллекций или выберите реальный <code>.astro/data-store.json</code>.</div>
+          <div id="notice" class="notice">Load the bundled sample or select a local <code>.astro/data-store.json</code>.</div>
           <ul class="collection-list" id="collection-list"></ul>
         </section>
 
         <section class="panel" aria-labelledby="query-title">
-          <h2 id="query-title">SQL-запрос</h2>
+          <h2 id="query-title">SQL query</h2>
           <div class="query-toolbar" id="query-toolbar"></div>
-          <textarea id="sql" spellcheck="false" aria-label="SQL-запрос"></textarea>
+          <textarea id="sql" spellcheck="false" aria-label="SQL query"></textarea>
           <div class="button-row" style="margin-top:10px">
-            <button class="primary" id="run-query">Выполнить SQL</button>
+            <button class="primary" id="run-query">Run SQL</button>
           </div>
-          <div class="results-wrap" id="results"><div class="empty">Результат появится здесь.</div></div>
+          <div class="results-wrap" id="results"><div class="empty">Query results will appear here.</div></div>
         </section>
       </div>
 
       <div>
         <section class="panel" aria-labelledby="actions-title">
-          <h2 id="actions-title">Свободная проверка</h2>
-          <p>Кнопки всегда доступны: попробуйте намеренно нарушить порядок.</p>
+          <h2 id="actions-title">Explore the content store</h2>
+          <p>Load a source, start DuckDB, then run a query. You can also try a query before loading a source to see the error.</p>
           <div class="button-row">
-            <button id="load-sample">Загрузить пример Astro</button>
-            <label class="file-button">Выбрать data-store.json<input id="file-input" type="file" accept=".json,application/json"></label>
-            <button id="start-duckdb">Запустить DuckDB</button>
-            <button id="clear-state">Сбросить</button>
+            <button id="load-sample">Load Astro sample</button>
+            <label class="file-button">Select local store<input id="file-input" type="file" accept=".json,application/json"></label>
+            <button id="start-duckdb">Start DuckDB</button>
+            <button id="clear-state">Reset</button>
           </div>
         </section>
 
         <section class="panel walkthroughs" aria-labelledby="walkthrough-title">
-          <h2 id="walkthrough-title">Пошаговые проверки</h2>
+          <h2 id="walkthrough-title">Walkthroughs</h2>
           <div class="tabs" id="scenario-tabs" role="tablist"></div>
           <div class="scenario" id="scenario"></div>
         </section>
 
         <p class="footnote">
-          Запуск: <code>pnpm dev</code>. DuckDB-Wasm, worker и WASM отдаются локально через Vite; база и данные живут только в памяти вкладки. Meta-коллекции Astro (<code>meta:…</code>) адаптер намеренно не переносит в аналитическую таблицу.
+          Run with <code>pnpm dev</code>. DuckDB-Wasm, Worker, and WASM assets load locally. The database and content live in tab memory. The adapter excludes Astro meta collections, such as <code>meta:blog</code>, from the SQL tables.
         </p>
       </div>
     </div>
@@ -187,9 +187,9 @@
     const InspectorLogic = (() => {
       const initialState = () => ({
         source: { kind: "none", name: "—", rows: [], collections: [] },
-        database: { status: "idle", label: "не запущена" },
-        query: { status: "idle", label: "запрос не выполнялся", columns: [], rows: [] },
-        lastChange: "Прототип готов к работе.",
+        database: { status: "idle", label: "not started" },
+        query: { status: "idle", label: "no query yet", columns: [], rows: [] },
+        lastChange: "Load the bundled sample or select a local content store to begin.",
         error: null,
       });
 
@@ -201,22 +201,22 @@
             return {
               ...state,
               source: action.source,
-              query: { status: "idle", label: "таблица обновлена; выполните запрос", columns: [], rows: [] },
-              lastChange: `Подготовлено строк: ${action.source.rows.length}.`,
+              query: { status: "idle", label: "source loaded; run a query", columns: [], rows: [] },
+              lastChange: `Prepared ${action.source.rows.length} content rows.`,
               error: null,
             };
           case "DB_LOADING":
-            return { ...state, database: { status: "loading", label: "загружается WebAssembly…" }, lastChange: "Запускаем локальный SQL-движок.", error: null };
+            return { ...state, database: { status: "loading", label: "loading WebAssembly..." }, lastChange: "Starting the local SQL engine.", error: null };
           case "DB_STAGE":
             return { ...state, database: { status: "loading", label: action.label }, lastChange: action.label, error: null };
           case "DB_READY":
-            return { ...state, database: { status: "ready", label: "готова в памяти" }, lastChange: "DuckDB готова к запросам.", error: null };
+            return { ...state, database: { status: "ready", label: "ready in memory" }, lastChange: "DuckDB is ready for queries.", error: null };
           case "QUERY_RUNNING":
-            return { ...state, query: { ...state.query, status: "running", label: "выполняется…" }, lastChange: "DuckDB выполняет SQL.", error: null };
+            return { ...state, query: { ...state.query, status: "running", label: "running..." }, lastChange: "DuckDB is running the SQL query.", error: null };
           case "QUERY_DONE":
-            return { ...state, query: { status: "done", label: `${action.rows.length} строк в результате`, columns: action.columns, rows: action.rows }, lastChange: "Запрос выполнен.", error: null };
+            return { ...state, query: { status: "done", label: `${action.rows.length} result rows`, columns: action.columns, rows: action.rows }, lastChange: "Query completed.", error: null };
           case "FAILED":
-            return { ...state, query: { ...state.query, status: "failed", label: "ошибка" }, lastChange: "Действие отклонено.", error: action.message };
+            return { ...state, query: { ...state.query, status: "failed", label: "error" }, lastChange: "Action failed.", error: action.message };
           default:
             return state;
         }
@@ -238,12 +238,13 @@
       }
 
       function rowsFromAstroMap(store) {
-        if (!(store instanceof Map)) throw new Error("Ожидался корневой Map из Astro/devalue.");
+        if (!(store instanceof Map)) throw new Error("Expected an Astro/devalue store with a root Map.");
         const rows = [];
         for (const [collection, entries] of store) {
           if (String(collection).startsWith("meta:")) continue;
-          if (!(entries instanceof Map)) continue;
+          if (!(entries instanceof Map)) throw new Error("Expected a Map of entries for each ordinary collection.");
           for (const [mapId, entry] of entries) {
+            if (!entry || typeof entry !== "object") throw new Error("Expected an Astro content entry.");
             const safeData = jsonSafe(entry?.data ?? {});
             rows.push({
               collection: String(collection),
@@ -259,19 +260,26 @@
       }
 
       function rowsFromText(text) {
-        let plain;
-        try { plain = JSON.parse(text); } catch { plain = null; }
-        if (Array.isArray(plain) && plain.every((row) => row && "collection" in row && "id" in row)) {
-          return plain.map((row) => ({
-            collection: String(row.collection),
-            id: String(row.id),
-            file_path: row.file_path ?? row.filePath ?? null,
-            data_json: typeof row.data_json === "string" ? row.data_json : JSON.stringify(jsonSafe(row.data ?? {})),
-            body: row.body ?? null,
-            digest: row.digest ?? null,
-          }));
+        try {
+          const plain = JSON.parse(text);
+          if (Array.isArray(plain) && plain.every((row) => row && typeof row === "object" && row.collection != null && row.id != null)) {
+            return plain.filter((row) => !String(row.collection).startsWith("meta:")).map((row) => {
+              const data = typeof row.data_json === "string" ? JSON.parse(row.data_json) : jsonSafe(row.data ?? {});
+              if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("Expected entry data to be a JSON object.");
+              return {
+                collection: String(row.collection),
+                id: String(row.id),
+                file_path: row.file_path ?? row.filePath ?? null,
+                data_json: JSON.stringify(data),
+                body: row.body ?? null,
+                digest: row.digest ?? null,
+              };
+            });
+          }
+          return rowsFromAstroMap(parseDevalue(text));
+        } catch {
+          throw new Error("Unsupported content store. Select an Astro/devalue store or a normalized JSON row array.");
         }
-        return rowsFromAstroMap(parseDevalue(text));
       }
 
       function summarize(rows) {
@@ -344,13 +352,13 @@ ORDER BY post_id;`,
         ["lin", { id: "lin", data: { name: "Lin", team: "editorial", timezone: "UTC+8" }, filePath: "src/data/authors/lin.json" }],
       ])],
       ["blog", new Map([
-        ["duckdb-in-astro", { id: "duckdb-in-astro", data: { title: "DuckDB внутри Astro", author: "ada", publishedAt: "2026-08-01", tags: ["astro", "sql"], draft: false }, filePath: "src/data/blog/duckdb-in-astro.md", digest: "demo-a1" }],
-        ["content-audit", { id: "content-audit", data: { title: "Аудит контента", author: "lin", publishedAt: "2026-08-08", draft: true, seoTitle: "Content audit" }, filePath: "src/data/blog/content-audit.md", digest: "demo-b2" }],
-        ["orphan", { id: "orphan", data: { title: "Запись без автора", author: "missing", draft: false }, filePath: "src/data/blog/orphan.md", digest: "demo-c3" }],
+        ["duckdb-in-astro", { id: "duckdb-in-astro", data: { title: "DuckDB inside Astro", author: "ada", publishedAt: "2026-08-01", tags: ["astro", "sql"], draft: false }, filePath: "src/data/blog/duckdb-in-astro.md", digest: "demo-a1" }],
+        ["content-audit", { id: "content-audit", data: { title: "Content audit", author: "lin", publishedAt: "2026-08-08", draft: true, seoTitle: "Content audit" }, filePath: "src/data/blog/content-audit.md", digest: "demo-b2" }],
+        ["orphan", { id: "orphan", data: { title: "Post without an author", author: "missing", draft: false }, filePath: "src/data/blog/orphan.md", digest: "demo-c3" }],
       ])],
       ["docs", new Map([
-        ["getting-started", { id: "getting-started", data: { title: "Начало работы", section: "guide", order: 1 }, filePath: "src/data/docs/getting-started.mdx" }],
-        ["sql-recipes", { id: "sql-recipes", data: { title: "SQL-рецепты", section: "reference", order: 4, tags: ["sql"] }, filePath: "src/data/docs/sql-recipes.mdx" }],
+        ["getting-started", { id: "getting-started", data: { title: "Getting started", section: "guide", order: 1 }, filePath: "src/data/docs/getting-started.mdx" }],
+        ["sql-recipes", { id: "sql-recipes", data: { title: "SQL recipes", section: "reference", order: 4, tags: ["sql"] }, filePath: "src/data/docs/sql-recipes.mdx" }],
       ])],
       ["meta:blog", new Map([["sync-token", "prototype-token"]])],
     ]);
@@ -358,46 +366,46 @@ ORDER BY post_id;`,
     const SCENARIOS = [
       {
         id: "happy",
-        title: "Обзор",
-        description: "Проверяем основной путь: общий store превращается в строки, а SQL даёт перечень коллекций и объём каждой.",
-        watch: "Следите, что meta-коллекция не попадает в таблицу, а три обычные коллекции видны вместе.",
+        title: "Overview",
+        description: "Load the shared store as rows, then use SQL to count entries in each collection.",
+        watch: "The meta collection is excluded. All three ordinary collections appear together.",
         steps: [
-          ["Загрузить store-пример", () => loadSample()],
-          ["Запустить DuckDB", () => ensureDatabase()],
-          ["Посчитать коллекции", () => chooseAndRun("overview")],
+          ["Load the sample store", () => loadSample()],
+          ["Start DuckDB", () => ensureDatabase()],
+          ["Count collection entries", () => chooseAndRun("overview")],
         ],
       },
       {
         id: "drift",
-        title: "Разнобой полей",
-        description: "У записей одной коллекции не обязаны совпадать необязательные поля. Раскладываем JSON-ключи и считаем их присутствие.",
-        watch: "В blog поле title есть у всех, а tags, publishedAt и seoTitle — только у части записей.",
+        title: "Field coverage",
+        description: "Entries in one collection can have different optional fields. Count how many entries contain each field.",
+        watch: "Every blog entry has a title. Only some have tags, publishedAt, or seoTitle.",
         steps: [
-          ["Загрузить неоднородный пример", () => loadSample()],
-          ["Подготовить DuckDB", () => ensureDatabase()],
-          ["Показать покрытие полей", () => chooseAndRun("schema")],
+          ["Load entries with optional fields", () => loadSample()],
+          ["Prepare DuckDB", () => ensureDatabase()],
+          ["Show field coverage", () => chooseAndRun("schema")],
         ],
       },
       {
         id: "guardrail",
-        title: "Неверный порядок",
-        description: "Проверяем защиту идеи: SQL до загрузки источника не должен создавать иллюзию пустого результата.",
-        watch: "Прототип явно отклонит запрос и объяснит, что сначала нужен content store.",
+        title: "Wrong order",
+        description: "Try a query before loading a source. The Experiment should explain the missing step.",
+        watch: "The query fails visibly and asks you to load a content store first.",
         steps: [
-          ["Сбросить источник", () => resetWorkbench()],
-          ["Попробовать SQL слишком рано", () => chooseAndRun("overview")],
-          ["Восстановить правильный путь", async () => { await loadSample(); await ensureDatabase(); await chooseAndRun("overview"); }],
+          ["Reset source", () => resetWorkbench()],
+          ["Try SQL before loading a source", () => chooseAndRun("overview")],
+          ["Load a source and run the query", async () => { await loadSample(); await ensureDatabase(); await chooseAndRun("overview"); }],
         ],
       },
       {
         id: "join",
-        title: "Связи",
-        description: "Проверяем, полезно ли держать разные коллекции в одной таблице: соединяем blog.author со справочником authors.",
-        watch: "У записи orphan ссылка ведёт на отсутствующего автора — LEFT JOIN оставит пустое имя и сделает проблему заметной.",
+        title: "References",
+        description: "Inspect references across collections by joining blog.author to authors.id.",
+        watch: "The orphan post points to a missing author. LEFT JOIN keeps the post visible with an empty author name.",
         steps: [
-          ["Загрузить связанные коллекции", () => loadSample()],
-          ["Подготовить DuckDB", () => ensureDatabase()],
-          ["Соединить posts и authors", () => chooseAndRun("relations")],
+          ["Load related collections", () => loadSample()],
+          ["Prepare DuckDB", () => ensureDatabase()],
+          ["Join posts and authors", () => chooseAndRun("relations")],
         ],
       },
     ];
@@ -422,10 +430,10 @@ ORDER BY post_id;`,
 
     function render() {
       statusGrid.innerHTML = `
-        <div class="status-card"><span>Источник</span><strong>${escapeHtml(state.source.name)}</strong><small>${state.source.kind === "none" ? "ничего не загружено" : escapeHtml(state.source.kind)}</small></div>
-        <div class="status-card"><span>Строки контента</span><strong>${state.source.rows.length}</strong><small>${state.source.collections.length} коллекций</small></div>
+        <div class="status-card"><span>Source</span><strong>${escapeHtml(state.source.name)}</strong><small>${state.source.kind === "none" ? "nothing loaded" : escapeHtml(state.source.kind)}</small></div>
+        <div class="status-card"><span>Content rows</span><strong>${state.source.rows.length}</strong><small>${state.source.collections.length} collections</small></div>
         <div class="status-card"><span>DuckDB</span><strong>${escapeHtml(state.database.label)}</strong><small>${state.database.status}</small></div>
-        <div class="status-card"><span>Последний запрос</span><strong>${escapeHtml(state.query.label)}</strong><small>${state.query.status}</small></div>`;
+        <div class="status-card"><span>Last query</span><strong>${escapeHtml(state.query.label)}</strong><small>${state.query.status}</small></div>`;
       notice.className = `notice${state.error ? " error" : ""}`;
       notice.textContent = state.error ?? state.lastChange;
       collectionList.innerHTML = state.source.collections.map(({ name, count }) => `<li><span class="mono">${escapeHtml(name)}</span><strong>${count}</strong></li>`).join("");
@@ -435,7 +443,7 @@ ORDER BY post_id;`,
 
     function renderResults() {
       if (!state.query.columns.length) {
-        results.innerHTML = `<div class="empty">${state.query.status === "running" ? "DuckDB считает…" : "Результат появится здесь."}</div>`;
+        results.innerHTML = `<div class="empty">${state.query.status === "running" ? "DuckDB is running the query..." : "Query results will appear here."}</div>`;
         return;
       }
       const head = state.query.columns.map((column) => `<th>${escapeHtml(column)}</th>`).join("");
@@ -452,12 +460,12 @@ ORDER BY post_id;`,
       const scenario = SCENARIOS[activeScenario];
       $("#scenario").innerHTML = `
         <p>${escapeHtml(scenario.description)}</p>
-        <p><strong>Что заметить:</strong> ${escapeHtml(scenario.watch)}</p>
+        <p><strong>What to observe:</strong> ${escapeHtml(scenario.watch)}</p>
         <div class="steps">${scenario.steps.map(([label], index) => `
           <div class="step ${index < scenarioStep ? "done" : ""}">
             <span class="step-number">${index < scenarioStep ? "✓" : index + 1}</span>
             <span>${escapeHtml(label)}</span>
-            <button data-step="${index}" ${index !== scenarioStep ? "disabled" : ""}>Выполнить</button>
+            <button data-step="${index}" ${index !== scenarioStep ? "disabled" : ""}>Run step</button>
           </div>`).join("")}</div>`;
       document.querySelectorAll("[data-step]").forEach((button) => button.addEventListener("click", () => performScenarioStep(Number(button.dataset.step))));
     }
@@ -487,18 +495,18 @@ ORDER BY post_id;`,
     async function loadSample() {
       const serializedLikeAstro = stringifyDevalue(SAMPLE_STORE);
       const rows = InspectorLogic.rowsFromText(serializedLikeAstro);
-      dispatch({ type: "SOURCE_LOADED", source: makeSource(rows, "Astro/devalue example", "демо data-store.json") });
+      dispatch({ type: "SOURCE_LOADED", source: makeSource(rows, "Astro/devalue example", "sample data-store.json") });
       if (conn) await loadRowsIntoDuckDB();
     }
 
     async function loadFile(file) {
       try {
         const rows = InspectorLogic.rowsFromText(await file.text());
-        if (!rows.length) throw new Error("В файле не найдено записей обычных коллекций.");
-        dispatch({ type: "SOURCE_LOADED", source: makeSource(rows, "локальный файл Astro", file.name) });
+        if (!rows.length) throw new Error("No ordinary collection entries were found in this file.");
+        dispatch({ type: "SOURCE_LOADED", source: makeSource(rows, "local content store", file.name) });
         if (conn) await loadRowsIntoDuckDB();
       } catch (error) {
-        dispatch({ type: "FAILED", message: `Не удалось разобрать store: ${error.message}` });
+        dispatch({ type: "FAILED", message: `Could not load content store: ${error.message}` });
       }
     }
 
@@ -516,11 +524,11 @@ ORDER BY post_id;`,
           mainWorker: duckdbWorkerUrl,
           mainModule: duckdbWasmUrl,
         };
-        dispatch({ type: "DB_STAGE", label: "инициализируем DuckDB…" });
+        dispatch({ type: "DB_STAGE", label: "initializing DuckDB..." });
         worker = new Worker(bundle.mainWorker);
-        const workerFailure = new Promise((_, reject) => worker.addEventListener("error", () => reject(new Error("Web Worker не смог загрузить DuckDB bundle.")), { once: true }));
+        const workerFailure = new Promise((_, reject) => worker.addEventListener("error", () => reject(new Error("The Web Worker could not load the DuckDB bundle.")), { once: true }));
         db = new duckdb.AsyncDuckDB(new duckdb.ConsoleLogger(), worker);
-        await withTimeout(Promise.race([db.instantiate(bundle.mainModule), workerFailure]), 60000, "DuckDB-Wasm не инициализировалась за 60 секунд.");
+        await withTimeout(Promise.race([db.instantiate(bundle.mainModule), workerFailure]), 60000, "DuckDB-Wasm did not initialize within 60 seconds.");
         conn = await db.connect();
         if (state.source.rows.length) await loadRowsIntoDuckDB();
         dispatch({ type: "DB_READY" });
@@ -528,7 +536,7 @@ ORDER BY post_id;`,
         worker?.terminate();
         db = null;
         conn = null;
-        dispatch({ type: "FAILED", message: `DuckDB не запустилась: ${error.message}` });
+        dispatch({ type: "FAILED", message: `DuckDB could not start: ${error.message}` });
       }
     }
 
@@ -582,7 +590,7 @@ ORDER BY post_id;`,
 
     async function runQuery() {
       if (!state.source.rows.length) {
-        dispatch({ type: "FAILED", message: "Сначала загрузите content store: пустой результат здесь был бы вводящим в заблуждение." });
+        dispatch({ type: "FAILED", message: "Load a content store before running SQL. Choose the bundled Astro sample or select a local store." });
         return;
       }
       if (!conn) await ensureDatabase();
@@ -594,7 +602,7 @@ ORDER BY post_id;`,
         const rows = table.toArray().map((row) => Object.fromEntries(columns.map((column) => [column, normalizeCell(row[column])])));
         dispatch({ type: "QUERY_DONE", columns, rows });
       } catch (error) {
-        dispatch({ type: "FAILED", message: `SQL отклонён: ${error.message}` });
+        dispatch({ type: "FAILED", message: `SQL query failed: ${error.message}` });
       }
     }
 
@@ -627,10 +635,10 @@ ORDER BY post_id;`,
     }
 
     $("#query-toolbar").innerHTML = [
-      ["overview", "Коллекции"],
-      ["titles", "Все заголовки"],
-      ["schema", "Покрытие полей"],
-      ["relations", "Blog ↔ authors"],
+      ["overview", "Collections"],
+      ["titles", "All titles"],
+      ["schema", "Field coverage"],
+      ["relations", "Blog references"],
     ].map(([key, label]) => `<button data-query="${key}">${label}</button>`).join("");
     document.querySelectorAll("[data-query]").forEach((button) => button.addEventListener("click", () => { sql.value = QUERIES[button.dataset.query]; }));
     $("#load-sample").addEventListener("click", loadSample);

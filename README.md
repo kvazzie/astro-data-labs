@@ -26,7 +26,7 @@ Entering the shell restores the agent skills listed in `skills-lock.json`.
 - Includes queries for collection counts, field coverage, titles, and cross-collection references.
 - Keeps uploaded content local. The prototype has no application server and does not send file contents elsewhere.
 
-The interface is currently in Russian. The code and repository documentation are in English.
+The interface, walkthroughs, errors, sample records, and documentation use English.
 
 ## Experiment contract
 
@@ -89,7 +89,7 @@ Relevant upstream documentation:
 
 ## Prototype status
 
-Status: **exploring**.
+Status: **Exploring**.
 
 The useful unit is the adapter and state reducer inside `experiments/duckdb-content-inspector/index.html`. The current single-file form keeps the experiment easy to run and discard. It is not a production inspector, CMS, editor, or stable Astro integration.
 
@@ -99,7 +99,7 @@ The prototype currently uses:
 - `devalue` `5.3.2`
 - Vite `8.0.10`
 
-The Experiment project has a static build and an unattended Chromium check. The interface also keeps four interactive walkthroughs for manual investigation.
+The Experiment project has a static build and an unattended Chromium check. The check verifies the seven bundled entries, all four sample queries, local Astro and normalized row input, source paths, visible errors, and recovery. It also rejects remote runtime requests. The interface has four interactive walkthroughs: Overview, Field coverage, Wrong order, and References.
 
 ## Repository guide
 

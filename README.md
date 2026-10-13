@@ -50,11 +50,19 @@ The original author, Artemii Rachev, is exploring the position that web projects
 Use Git and [devenv](https://devenv.sh/) to enter the repository's configured development shell:
 
 ```sh
+git clone https://github.com/kvazzie/astro-data-labs.git
+cd astro-data-labs
 devenv shell
 pnpm install
 ```
 
 Entering the shell restores the agent skills recorded in `skills-lock.json`.
+
+Existing clones of `kvazzie/astro-duckdb-inspector` still work through GitHub's rename redirect. Update their remote to the canonical URL:
+
+```sh
+git remote set-url origin https://github.com/kvazzie/astro-data-labs.git
+```
 
 Every Experiment project implements the same commands:
 
@@ -96,11 +104,22 @@ The experiment intentionally reads Astro's internal generated store. It does not
 
 ## Contributing
 
-To propose a new experiment, open an [Experiment request](https://github.com/kvazzie/astro-duckdb-inspector/issues/new?template=experiment_request.yml). Explain the Astro data problem or opportunity, proposed response, observable result, trade-offs, and non-goals. Requests are evaluated on whether they pose a concrete question and can demonstrate evidence within the Lab's boundaries.
+To propose a new experiment, open an [Experiment request](https://github.com/kvazzie/astro-data-labs/issues/new?template=experiment_request.yml). Explain the Astro data problem or opportunity, proposed response, observable result, trade-offs, and non-goals. Requests are evaluated on whether they pose a concrete question and can demonstrate evidence within the Lab's boundaries.
 
 An Experiment request is welcome before substantial work. You may also submit an explanatory pull request directly when it describes the problem and evidence. Use the [pull request guidance](.github/pull_request_template.md) to include purpose, run instructions, a sample, observations from running it, and remaining limitations. Keep public documentation and experiment interfaces in English, keep experiment-specific code with its project, and satisfy the Experiment contract.
 
-Use a [Feature request](https://github.com/kvazzie/astro-duckdb-inspector/issues/new?template=feature_request.yml) to change repository functionality or an existing experiment. This keeps new Experiment proposals distinct from improvements to work already in the Lab.
+Use a [Feature request](https://github.com/kvazzie/astro-data-labs/issues/new?template=feature_request.yml) to change repository functionality or an existing experiment. This keeps new Experiment proposals distinct from improvements to work already in the Lab.
+
+Use [Discussions](https://github.com/kvazzie/astro-data-labs/discussions) for early thinking, design conversations, community examples, and help:
+
+| Category | Use it for |
+| --- | --- |
+| [Ideas](https://github.com/kvazzie/astro-data-labs/discussions/categories/ideas) | Explore an idea before proposing a concrete Experiment or Feature request. |
+| [Architecture](https://github.com/kvazzie/astro-data-labs/discussions/categories/architecture) | Compare data pipeline, architecture, and infrastructure decisions and their trade-offs. |
+| [Show and tell](https://github.com/kvazzie/astro-data-labs/discussions/categories/show-and-tell) | Share experiments, observations, and projects built from Lab work. |
+| [Q&A](https://github.com/kvazzie/astro-data-labs/discussions/categories/q-a) | Ask how to run, understand, or adapt an experiment. Answers can be marked as accepted. |
+
+The repository accepts squash merges for pull requests.
 
 Filing a request does not select it for implementation. Requests remain ordinary GitHub Issues until maintainers select them into the GitHub Project Roadmap. The Roadmap represents selected work, not a manual list of promised experiments or releases.
 

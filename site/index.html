@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="An open index of executable experiments for Astro data pipelines, architecture, and infrastructure. Browse the questions, results, and trade-offs." />
+    <meta name="color-scheme" content="light" />
+    <title>Astro Data Labs | Experiment index</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header wrap">
+      <a class="wordmark" href="#main" aria-label="Astro Data Labs home">
+        <span class="lab-mark" aria-hidden="true">ad/</span>
+        Astro Data Labs
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#experiments">Experiments</a>
+        <a href="#contribute">Contribute</a>
+        <a href="https://github.com/kvazzie/astro-data-labs">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+
+    <main id="main" class="wrap">
+      <section class="intro" aria-labelledby="intro-title">
+        <p class="eyebrow">An open, community-driven Lab</p>
+        <h1 id="intro-title">Data experiments<br /> for Astro.</h1>
+        <p class="lede">Executable experiments in data pipelines, architecture, and infrastructure. Explore a question, run the code, and judge the trade-offs for your own project.</p>
+        <a class="primary-link" href="#experiments">Browse the Experiment index <span aria-hidden="true">↓</span></a>
+        <aside class="thesis" aria-labelledby="thesis-title">
+          <h2 id="thesis-title">The Author thesis</h2>
+          <p>Artemii Rachev is exploring the position that web projects benefit from a monorepository with Astro as their web foundation. The Lab puts that evolving thesis to the test through working experiments.</p>
+          <p>Each Experiment investigates one possible approach. Contributors can disagree with the thesis, and every team retains its own architecture decisions.</p>
+        </aside>
+      </section>
+
+      <section id="experiments" class="section" aria-labelledby="experiments-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Questions you can run</p>
+            <h2 id="experiments-title">Experiment index</h2>
+          </div>
+          <span class="index-count">01 Experiment</span>
+        </div>
+        <p class="section-intro">Independent, forkable projects with code, an observable result, and documented limits. An Experiment's status describes its investigation, not its production readiness.</p>
+
+        <!-- Maintain Experiment questions, statuses, and links here by hand. -->
+        <article class="experiment" aria-labelledby="duckdb-title">
+          <div class="experiment-heading">
+            <p class="eyebrow">Content collections / SQL visibility</p>
+            <span class="status">Exploring</span>
+          </div>
+          <h3 id="duckdb-title">DuckDB content inspector</h3>
+          <p class="question">Can Astro's generated content store provide SQL visibility for inspecting collections, schema drift, and references during a Content-first launch?</p>
+          <p>A read-only Direct data view of Astro content. Load the bundled sample or a local store, start DuckDB in the browser, and inspect collections with SQL.</p>
+          <dl class="experiment-notes">
+            <div>
+              <dt>Observable result</dt>
+              <dd>The sample has seven ordinary entries: authors = 2, blog = 3, docs = 2. Queries inspect titles, field coverage, and references.</dd>
+            </div>
+            <div>
+              <dt>Current limits</dt>
+              <dd>Exploring means the question and implementation are still changing. This Experiment reads Astro's internal generated store, which can change. Selected content stays in tab memory.</dd>
+            </div>
+          </dl>
+          <div class="experiment-links">
+            <a class="primary-link" href="https://github.com/kvazzie/astro-data-labs/tree/main/experiments/duckdb-content-inspector#run-it">Run instructions <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/kvazzie/astro-data-labs/tree/main/experiments/duckdb-content-inspector">Documentation and code <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+        <p class="index-note">Experiments are peers, not ranked recommendations. They can be Exploring, Concluded, Graduated, or Archived. <a href="https://github.com/kvazzie/astro-data-labs#browse-the-experiment-index">Read the status definitions.</a></p>
+      </section>
+
+      <section id="contribute" class="section" aria-labelledby="contribute-title">
+        <p class="eyebrow">Bring a question or an observation</p>
+        <h2 id="contribute-title">Take part in the Lab</h2>
+        <p class="section-intro">Propose an Experiment before substantial work, share a working approach in a pull request, or start with a discussion. Explain the problem, the evidence, and the limits.</p>
+        <div class="contribution-grid">
+          <a class="contribution" href="https://github.com/kvazzie/astro-data-labs/issues/new?template=experiment_request.yml">
+            <h3>Experiment request <span aria-hidden="true">↗</span></h3>
+            <p>Propose a new Astro data question, a possible response, and an observable result.</p>
+          </a>
+          <a class="contribution" href="https://github.com/kvazzie/astro-data-labs/issues/new?template=feature_request.yml">
+            <h3>Feature request <span aria-hidden="true">↗</span></h3>
+            <p>Improve repository functionality or an existing Experiment.</p>
+          </a>
+          <a class="contribution" href="https://github.com/kvazzie/astro-data-labs/blob/main/.github/pull_request_template.md">
+            <h3>Pull request guidance <span aria-hidden="true">↗</span></h3>
+            <p>Include purpose, run instructions, a sample, observations, and remaining limitations.</p>
+          </a>
+          <a class="contribution" href="https://github.com/kvazzie/astro-data-labs/discussions">
+            <h3>Discussions <span aria-hidden="true">↗</span></h3>
+            <p>Explore ideas, compare architecture, share your work, or ask a question.</p>
+          </a>
+        </div>
+        <nav class="discussion-links" aria-label="Discussion categories">
+          <a href="https://github.com/kvazzie/astro-data-labs/discussions/categories/ideas">Ideas</a>
+          <a href="https://github.com/kvazzie/astro-data-labs/discussions/categories/architecture">Architecture</a>
+          <a href="https://github.com/kvazzie/astro-data-labs/discussions/categories/show-and-tell">Show and tell</a>
+          <a href="https://github.com/kvazzie/astro-data-labs/discussions/categories/q-a">Q&amp;A</a>
+        </nav>
+      </section>
+    </main>
+
+    <footer class="site-footer wrap">
+      <p>Astro Data Labs · Independent questions, shared evidence.</p>
+      <div>
+        <a href="https://github.com/kvazzie/astro-data-labs#readme">About the Lab</a>
+        <a href="https://github.com/kvazzie/astro-data-labs/blob/main/LICENSE">MIT License</a>
+      </div>
+    </footer>
+  </body>
+</html>

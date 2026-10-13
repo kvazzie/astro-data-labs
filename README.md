@@ -6,6 +6,8 @@ An Experiment investigates one concrete Astro data problem or opportunity. It in
 
 ## Browse the Experiment index
 
+The [public Lab index](https://kvazzie.github.io/astro-data-labs/) introduces the Lab, its experiments, and contribution routes without requiring a clone. This README remains the canonical long-form documentation.
+
 Start with an experiment's question and status. Follow its documentation to run the sample, compare the observed result with the stated goal, and read its limitations before adapting the approach to your project. An experiment may demonstrate an application, package, pipeline, architecture, or infrastructure idea. It does not have to deploy online to belong in the index.
 
 | Experiment | Question | Status | Documentation and runnable project |
@@ -122,6 +124,22 @@ Use [Discussions](https://github.com/kvazzie/astro-data-labs/discussions) for ea
 The repository accepts squash merges for pull requests.
 
 Filing a request does not select it for implementation. Requests remain ordinary GitHub Issues until maintainers select them into the GitHub Project Roadmap. The Roadmap represents selected work, not a manual list of promised experiments or releases.
+
+## Build and publish the Lab index
+
+The compact GitHub Pages entrance lives in [`site/`](site/). It is plain HTML and CSS with no documentation framework, client-side JavaScript, or application server. Experiment questions, statuses, and links are maintained by hand in `site/index.html`; update the corresponding README entry when changing them.
+
+Build the static files from the repository root:
+
+```sh
+pnpm build:index
+```
+
+The command copies the site into `dist/lab-index/`, replacing the previous output. It needs Node.js and no installed dependencies. You can also run `node scripts/build-lab-index.mjs` directly. Open `dist/lab-index/index.html` in a browser to inspect the result. Relative asset links work both from a local file and under the `/astro-data-labs/` Pages path.
+
+The [Lab index workflow](.github/workflows/lab-index.yml) builds and uploads the static artifact on pull requests. A push to `main` builds and deploys it to GitHub Pages. Maintainers can repeat a deployment by running the workflow manually against `main`. Other branches only build the artifact. This workflow is separate from the root Experiment build and check contract.
+
+In the repository's **Settings → Pages**, select **GitHub Actions** as the publishing source. Deployments use the `github-pages` environment; its protection rules must allow `main`. The published entrance is <https://kvazzie.github.io/astro-data-labs/>. Experiment runtimes are run locally through their own instructions.
 
 ## License and contribution terms
 

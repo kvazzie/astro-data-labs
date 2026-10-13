@@ -96,11 +96,11 @@ The experiment intentionally reads Astro's internal generated store. It does not
 
 ## Contributing
 
-To propose a new experiment, open an [Experiment request](../../issues/new?template=experiment_request.yml). Explain the Astro data problem or opportunity, proposed response, observable result, trade-offs, and non-goals. Requests are evaluated on whether they pose a concrete question and can demonstrate evidence within the Lab's boundaries.
+To propose a new experiment, open an [Experiment request](https://github.com/kvazzie/astro-duckdb-inspector/issues/new?template=experiment_request.yml). Explain the Astro data problem or opportunity, proposed response, observable result, trade-offs, and non-goals. Requests are evaluated on whether they pose a concrete question and can demonstrate evidence within the Lab's boundaries.
 
 An Experiment request is welcome before substantial work. You may also submit an explanatory pull request directly when it describes the problem and evidence. Use the [pull request guidance](.github/pull_request_template.md) to include purpose, run instructions, a sample, observations from running it, and remaining limitations. Keep public documentation and experiment interfaces in English, keep experiment-specific code with its project, and satisfy the Experiment contract.
 
-Use a [Feature request](../../issues/new?template=feature_request.yml) to change repository functionality or an existing experiment. This keeps new Experiment proposals distinct from improvements to work already in the Lab.
+Use a [Feature request](https://github.com/kvazzie/astro-duckdb-inspector/issues/new?template=feature_request.yml) to change repository functionality or an existing experiment. This keeps new Experiment proposals distinct from improvements to work already in the Lab.
 
 Filing a request does not select it for implementation. Requests remain ordinary GitHub Issues until maintainers select them into the GitHub Project Roadmap. The Roadmap represents selected work, not a manual list of promised experiments or releases.
 

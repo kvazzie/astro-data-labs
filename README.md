@@ -125,6 +125,12 @@ The repository accepts squash merges for pull requests.
 
 Filing a request does not select it for implementation. Requests remain ordinary GitHub Issues until maintainers select them into the GitHub Project Roadmap. The Roadmap represents selected work, not a manual list of promised experiments or releases.
 
+The [Lab Roadmap Project](https://github.com/users/kvazzie/projects/5/views/2) plans selected Lab and Experiment work together. `Scope` distinguishes `Lab` from `Experiment`; Experiment items name the existing Experiment in the issue. `Status` tracks `Todo`, `In Progress`, and `Done`, while `Target date` provides the Roadmap's scheduling field. Leave dates unset until maintainers choose them. Add requests only after an explicit selection decision, and do not automatically add every new issue.
+
+A large Experiment can later move its selected work into a dedicated Project. Keep the same issues and their history, link that Project from the Experiment's documentation, and remove the transferred items from the Lab Project to avoid duplicate planning. A separate Project is not required for every Experiment.
+
+The next [Experiment request](https://github.com/kvazzie/astro-data-labs/issues/18) asks whether Drizzle schemas, the official validation integration, Astro Content Collections, and build-time SQLite export can support a reversible path between database-backed loading and local content files for sibling projects. It starts as one ordinary Issue awaiting maintainer selection. Publishing the request does not implement it; observations from a future implementation should determine whether the question needs to split into separate experiments.
+
 ## Build and publish the Lab index
 
 The compact GitHub Pages entrance lives in [`site/`](site/). It is plain HTML and CSS with no documentation framework, client-side JavaScript, or application server. Experiment questions, statuses, and links are maintained by hand in `site/index.html`; update the corresponding README entry when changing them.

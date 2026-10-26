@@ -56,7 +56,7 @@ pnpm build
 pnpm check
 ```
 
-The build writes a static deliverable to `dist/` with local JavaScript, Worker, and WASM assets. The unattended check serves that directory and drives the visible Chromium workflow. It verifies the English interface, four walkthrough tabs with three visible step buttons, the bundled counts and queries, both local input formats, meta exclusion, retained source paths, unsupported input, query-before-source and SQL errors, and recovery. It fails on remote runtime requests, failed requests, or uncaught page errors.
+The build writes a static deliverable to `dist/` with local JavaScript, Worker, and WASM assets. The check installs the required Chromium version into Playwright's browser cache, downloading it when needed. It then serves the built directory and drives the visible Chromium workflow. It verifies the English interface, four walkthrough tabs with three visible step buttons, the bundled counts and queries, both local input formats, meta exclusion, retained source paths, references from posts without titles, unsupported input, query-before-source and SQL errors, and recovery. It fails on remote runtime requests, failed requests, or uncaught page errors.
 
 ## Compatibility boundary
 

@@ -327,7 +327,7 @@ ORDER BY collection, present_in_entries DESC, field;`,
   post_titles.value AS post,
   author_names.value AS author
 FROM astro_content AS posts
-JOIN astro_content_fields AS post_titles
+LEFT JOIN astro_content_fields AS post_titles
   ON post_titles.collection = posts.collection
  AND post_titles.id = posts.id
  AND post_titles.field = 'title'

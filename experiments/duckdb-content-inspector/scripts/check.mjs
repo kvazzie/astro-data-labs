@@ -134,6 +134,7 @@ try {
 
   await page.locator("#file-input").setInputFiles(fixturePath);
   await page.waitForFunction(() => document.querySelector("#status-grid .status-card:first-child strong")?.textContent === "local-data-store.json");
+  await page.waitForFunction(() => document.querySelector("#notice")?.textContent === "DuckDB is ready for queries.", null, { timeout: 60_000 });
   assert.equal(await page.locator("#collection-list li").count(), 1, "expected the selected local store to replace the bundled sample");
   assert.deepEqual(await runQuery(), [["notes", "1", "1"]], "expected the local Astro store to replace sample rows in SQL");
   await page.locator("#sql").fill("SELECT id, file_path, body, digest FROM astro_content ORDER BY id;");
@@ -170,6 +171,7 @@ try {
     ])),
   });
   await page.waitForFunction(() => document.querySelector("#status-grid .status-card:first-child strong")?.textContent === "untitled-reference.json");
+  await page.waitForFunction(() => document.querySelector("#notice")?.textContent === "DuckDB is ready for queries.", null, { timeout: 60_000 });
   await page.getByRole("button", { name: "Blog references", exact: true }).click();
   assert.deepEqual(await runQuery(), [
     ["titled", "Titled post", "Ada"],

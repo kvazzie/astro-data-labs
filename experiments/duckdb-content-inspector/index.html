@@ -504,7 +504,10 @@ ORDER BY post_id;`,
         const rows = InspectorLogic.rowsFromText(await file.text());
         if (!rows.length) throw new Error("No ordinary collection entries were found in this file.");
         dispatch({ type: "SOURCE_LOADED", source: makeSource(rows, "local content store", file.name) });
-        if (conn) await loadRowsIntoDuckDB();
+        if (conn) {
+          await loadRowsIntoDuckDB();
+          dispatch({ type: "DB_READY" });
+        }
       } catch (error) {
         dispatch({ type: "FAILED", message: `Could not load content store: ${error.message}` });
       }

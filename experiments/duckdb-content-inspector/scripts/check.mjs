@@ -134,6 +134,7 @@ try {
 
   await page.locator("#file-input").setInputFiles(fixturePath);
   await page.waitForFunction(() => document.querySelector("#status-grid .status-card:first-child strong")?.textContent === "local-data-store.json");
+  await page.waitForFunction(() => document.querySelector("#notice")?.textContent === "DuckDB is ready for queries.", null, { timeout: 60_000 });
   assert.equal(await page.locator("#collection-list li").count(), 1, "expected the selected local store to replace the bundled sample");
   assert.deepEqual(await runQuery(), [["notes", "1", "1"]], "expected the local Astro store to replace sample rows in SQL");
   await page.locator("#sql").fill("SELECT id, file_path, body, digest FROM astro_content ORDER BY id;");
@@ -159,6 +160,23 @@ try {
     ["first", "src/content/notes/first.md"],
     ["second", "src/content/notes/second.md"],
   ]);
+
+  await page.locator("#file-input").setInputFiles({
+    name: "untitled-reference.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify([
+      { collection: "authors", id: "ada", data: { name: "Ada" } },
+      { collection: "blog", id: "titled", data: { title: "Titled post", author: "ada" } },
+      { collection: "blog", id: "untitled", data: { author: "missing" } },
+    ])),
+  });
+  await page.waitForFunction(() => document.querySelector("#status-grid .status-card:first-child strong")?.textContent === "untitled-reference.json");
+  await page.waitForFunction(() => document.querySelector("#notice")?.textContent === "DuckDB is ready for queries.", null, { timeout: 60_000 });
+  await page.getByRole("button", { name: "Blog references", exact: true }).click();
+  assert.deepEqual(await runQuery(), [
+    ["titled", "Titled post", "Ada"],
+    ["untitled", "∅", "∅"],
+  ], "expected the reference query to retain an untitled post with a missing author");
 
   for (const input of ["[42]", "{}", "not JSON", JSON.stringify([{ collection: "notes", id: "invalid", data_json: "{" }]), '[["Map",1,2],"notes",{}]']) {
     await page.getByRole("button", { name: "Reset", exact: true }).click();

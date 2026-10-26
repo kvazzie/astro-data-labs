@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
-    "check": "node scripts/check.mjs"
+    "check": "playwright install chromium && node scripts/check.mjs"
   },
   "dependencies": {
     "@duckdb/duckdb-wasm": "1.33.1-dev57.0",

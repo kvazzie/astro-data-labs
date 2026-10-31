@@ -13,6 +13,7 @@ Start with an experiment's question and status. Follow its documentation to run 
 | Experiment | Question | Status | Documentation and runnable project |
 | --- | --- | --- | --- |
 | DuckDB content inspector | Can Astro's generated content store provide SQL visibility for inspecting collections, schema drift, and references during a Content-first launch? | Exploring | [Run the experiment](experiments/duckdb-content-inspector/) |
+| Reversible content | Can Drizzle-derived validation preserve records between database-backed Astro collections and local files, with a SQLite export for a sibling project? | Exploring | [Run the experiment](experiments/reversible-content/) |
 
 Experiment parity means that navigation, commands, and documentation treat experiments as peers. The first experiment does not define the Lab's scope, and the index does not rank experiments as preferred solutions. Each experiment must explain its own purpose and evidence.
 
@@ -104,6 +105,16 @@ You can also select a local `.astro/data-store.json` or normalized JSON row arra
 
 The experiment intentionally reads Astro's internal generated store. It does not use the supported `astro:content` application API, and changes to the store representation can break it. Experimental chunked storage also breaks its single-file assumption. These limits make it a research artifact rather than a stable Astro integration. See the [experiment documentation](experiments/duckdb-content-inspector/README.md#compatibility-boundary) for its compatibility boundary and full run instructions.
 
+## Run the reversible content experiment
+
+The [Reversible content Experiment](experiments/reversible-content/README.md) is **Exploring**. It compares database-backed and local JSON Content Collections through the same Drizzle-derived validation contract, converts records between the inputs, and exports validated local records to SQLite for a sibling SQL consumer.
+
+```sh
+pnpm experiment reversible-content
+```
+
+The terminal demonstration builds both routes over two authors and three posts, compares IDs and every field, performs a database-to-files-to-database round trip, and queries the SQLite export. Unattended checks also reject invalid inputs, change source records, rebuild, and detect an old export using a current source digest. See its documentation for pinned versions, manual conversion commands, observed results, and limits. The export is derived data; this Experiment does not select a permanent source of truth.
+
 ## Contributing
 
 To propose a new experiment, open an [Experiment request](https://github.com/kvazzie/astro-data-labs/issues/new?template=experiment_request.yml). Explain the Astro data problem or opportunity, proposed response, observable result, trade-offs, and non-goals. Requests are evaluated on whether they pose a concrete question and can demonstrate evidence within the Lab's boundaries.
@@ -129,7 +140,7 @@ The [Lab Roadmap Project](https://github.com/users/kvazzie/projects/5/views/2) p
 
 A large Experiment can later move its selected work into a dedicated Project. Keep the same issues and their history, link that Project from the Experiment's documentation, and remove the transferred items from the Lab Project to avoid duplicate planning. A separate Project is not required for every Experiment.
 
-The next [Experiment request](https://github.com/kvazzie/astro-data-labs/issues/18) asks whether Drizzle schemas, the official validation integration, Astro Content Collections, and build-time SQLite export can support a reversible path between database-backed loading and local content files for sibling projects. It starts as one ordinary Issue awaiting maintainer selection. Publishing the request does not implement it; observations from a future implementation should determine whether the question needs to split into separate experiments.
+The [Reversible content Experiment](experiments/reversible-content/) implements [request #18](https://github.com/kvazzie/astro-data-labs/issues/18). Its observations compare database-backed loading, local files, and a derived SQLite export without prescribing which input should own the records.
 
 ## Build and publish the Lab index
 

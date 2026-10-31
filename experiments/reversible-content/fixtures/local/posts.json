@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "A portable record",
+    "authorId": 1,
+    "publishedAt": "2026-08-01T10:30:00.123Z",
+    "summary": null,
+    "featured": true,
+    "metadata": { "tags": ["astro", "sqlite"], "rating": 4.5 }
+  },
+  {
+    "id": 2,
+    "title": "A draft with no author",
+    "authorId": null,
+    "publishedAt": null,
+    "summary": "",
+    "featured": false,
+    "metadata": { "tags": [], "rating": null }
+  },
+  {
+    "id": 3,
+    "title": "Following a reference",
+    "authorId": 2,
+    "publishedAt": "2026-08-02T00:00:00.000Z",
+    "summary": "References survive the switch",
+    "featured": false,
+    "metadata": { "tags": ["references"], "rating": 0 }
+  }
+]

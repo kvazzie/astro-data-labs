@@ -10,8 +10,8 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const scratch = await mkdtemp(join(tmpdir(), "reversible-content-"));
 const json = async (path) => JSON.parse(await readFile(path, "utf8"));
 
-function run(args, { fail, cwd = root } = {}) {
-  const result = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8", env: { ...process.env, ASTRO_TELEMETRY_DISABLED: "1" } });
+function run(args, { fail, cwd = root, env = {} } = {}) {
+  const result = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8", env: { ...process.env, ASTRO_TELEMETRY_DISABLED: "1", ...env } });
   if (result.error) throw result.error;
   const output = result.stdout + result.stderr;
   if (fail) {
@@ -25,6 +25,12 @@ const rejected = (pattern, ...args) => run(["pnpm", "exec", "tsx", "scripts/lab.
 const consumer = (artifact, expected, fail) => run([process.execPath, "query.mjs", artifact, ...(expected ? [expected] : [])], { cwd: join(root, "consumer"), fail });
 
 try {
+  // A local check must also work before any build has been run.
+  lab("build");
+  // Bypass the orchestration CLI to exercise Astro's default route and outDir.
+  run(["pnpm", "exec", "astro", "build", "--root", "producer"], {
+    env: { LAB_ROUTE: undefined, LAB_INPUT: undefined, LAB_OUTPUT: undefined },
+  });
   const expected = {
     authors: await json(join(root, "fixtures/local/authors.json")),
     posts: await json(join(root, "fixtures/local/posts.json")),

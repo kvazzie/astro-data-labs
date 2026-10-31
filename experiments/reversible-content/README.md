@@ -30,7 +30,7 @@ For commands below, change into `experiments/reversible-content/`:
 ```sh
 pnpm build       # seed the database fixture and build both routes
 pnpm typecheck   # TypeScript and Astro diagnostics
-pnpm check      # typecheck and unattended external behavior checks
+pnpm check      # typecheck, build both routes, and run unattended behavior checks
 ```
 
 ## Project boundaries and files
@@ -57,6 +57,8 @@ Generated files are ignored. `build` and `demo` reset `.lab/source.sqlite` from 
 Both loaders read a snapshot, validate row shapes and references, clear their collections, then pass every row through Astro's supported `parseData()` before `store.set()`. The collection ID is the decimal string of the numeric SQL ID. The numeric ID also remains in the record data. The local loader reads JSON files directly, including explicit nulls and numeric IDs, without filename-derived IDs or frontmatter conversions.
 
 Both routes render `records.json` through `getCollection()`. During the local build that endpoint also writes the validated collection records to SQLite. Export does not read `.astro/data-store.json` or any other internal content-store representation. This is a build-time pipeline, with no live synchronization or file watcher.
+
+A direct `pnpm exec astro build --root producer` defaults to the tracked local fixture and writes both `records.json` and `content.sqlite` under `dist/local/`. The exporter uses Astro's configured output directory, including explicit output overrides. The local `pnpm check` command builds its own baseline artifacts, so it also works on a clean checkout.
 
 Run either route on a chosen input, or perform the conversions explicitly:
 

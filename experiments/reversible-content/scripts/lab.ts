@@ -9,11 +9,17 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const fixture = join(root, "fixtures/local");
 const source = join(root, ".lab/source.sqlite");
 
+/** Reject omitted CLI paths, then resolve them against the caller's working directory. */
 function required(value: string | undefined, name: string): string {
   if (!value) throw new Error(`Missing ${name}`);
   return resolve(value);
 }
 
+/**
+ * Validate the selected input before starting an isolated Astro build, then return
+ * its records.json result. Unknown routes, invalid input, and failed builds reject
+ * the command rather than treating an older artifact as a successful build.
+ */
 async function build(route: string, input: string, output: string) {
   if (route !== "local" && route !== "database") throw new Error(`Unknown input route: ${route}`);
   // Read first so unavailable/invalid inputs never look like a successful build.
@@ -29,6 +35,11 @@ async function build(route: string, input: string, output: string) {
   return JSON.parse(await readFile(join(output, "records.json"), "utf8"));
 }
 
+/**
+ * Convert the supplied database to JSON, back to SQLite, then back to JSON without
+ * reseeding. Persist and print a record-level comparison report; reject the command
+ * if either the database or file comparison finds a changed, added, or removed row.
+ */
 async function roundtrip(database: string, output: string) {
   const original = await readDatabase(database);
   const files = join(output, "files");
@@ -52,6 +63,10 @@ async function roundtrip(database: string, output: string) {
   if (report.databaseDifferences.length || report.fileDifferences.length) throw new Error("Round-trip record differences found");
 }
 
+/**
+ * Reset the demonstration database with SQLite-allocated fixture IDs, build both
+ * routes, and fail if their validated records differ by any ID or field value.
+ */
 async function buildBoth() {
   await writeDatabase(source, await readLocal(fixture), true);
   const local = await build("local", fixture, join(root, "dist/local"));

@@ -10,6 +10,11 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const scratch = await mkdtemp(join(tmpdir(), "reversible-content-"));
 const json = async (path) => JSON.parse(await readFile(path, "utf8"));
 
+/**
+ * Run a public command with optional environment overrides and capture its output.
+ * Assert success by default, or a nonzero exit and matching diagnostic for an
+ * expected failure. Environment overrides can unset LAB_* variables for defaults.
+ */
 function run(args, { fail, cwd = root, env = {} } = {}) {
   const result = spawnSync(args[0], args.slice(1), { cwd, encoding: "utf8", env: { ...process.env, ASTRO_TELEMETRY_DISABLED: "1", ...env } });
   if (result.error) throw result.error;
@@ -22,6 +27,7 @@ function run(args, { fail, cwd = root, env = {} } = {}) {
 }
 const lab = (...args) => run(["pnpm", "exec", "tsx", "scripts/lab.ts", ...args]);
 const rejected = (pattern, ...args) => run(["pnpm", "exec", "tsx", "scripts/lab.ts", ...args], { fail: pattern });
+/** Query a standalone artifact, optionally asserting freshness or a known failure. */
 const consumer = (artifact, expected, fail) => run([process.execPath, "query.mjs", artifact, ...(expected ? [expected] : [])], { cwd: join(root, "consumer"), fail });
 
 try {

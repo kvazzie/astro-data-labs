@@ -11,6 +11,11 @@ const input = process.env.LAB_INPUT ?? fileURLToPath(new URL("../../fixtures/loc
 
 // One snapshot shared by both collections, including duplicate/reference checks.
 const snapshot = route === "local" ? readLocal(input) : readDatabase(input);
+/**
+ * Load one collection from the shared validated snapshot, replacing stored entries.
+ * Each row passes Astro's parseData before storage; numeric record IDs also become
+ * the string IDs used to address collection entries.
+ */
 function loader(collection: "authors" | "posts"): Loader {
   return {
     name: `${route}-${collection}`,

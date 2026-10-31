@@ -18,6 +18,10 @@ const ddl = `
   CREATE TABLE export_meta (contract TEXT NOT NULL, source_digest TEXT NOT NULL);
 `;
 
+/**
+ * Read the declared tables from an existing SQLite file through Drizzle's type
+ * mappings, then validate the records and their references. Always close the client.
+ */
 export async function readDatabase(path: string): Promise<Records> {
   await access(path);
   const client = createClient({ url: pathToFileURL(path).href });
@@ -29,6 +33,13 @@ export async function readDatabase(path: string): Promise<Records> {
   }
 }
 
+/**
+ * Validate records and write the fixture tables and source digest to a temporary
+ * SQLite file, replacing the destination only after successful writes and close.
+ * Preserve IDs by default; generatedIds exercises SQLite allocation during seeding
+ * and rejects any allocated ID that differs from the fixture. Allocation history
+ * and database objects outside the declared DDL are not copied.
+ */
 export async function writeDatabase(path: string, input: Records, generatedIds = false) {
   const records = validateRecords(input);
   await mkdir(dirname(path), { recursive: true });

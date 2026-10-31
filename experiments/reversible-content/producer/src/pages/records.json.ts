@@ -5,6 +5,11 @@ import { canonical, digest } from "../../../src/records";
 import { validateRecords } from "../../../src/contract";
 import { writeDatabase } from "../../../src/database";
 
+/**
+ * Return comparable records from Astro's supported collection API. For the local
+ * route, also export SQLite into the configured build directory before returning
+ * the response. An unset LAB_ROUTE follows the loader's local default.
+ */
 export async function GET() {
   const route = process.env.LAB_ROUTE ?? "local";
   const records = validateRecords({

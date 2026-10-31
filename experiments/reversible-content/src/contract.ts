@@ -46,7 +46,11 @@ export type Author = z.infer<typeof authorSchema>;
 export type Post = z.infer<typeof postSchema>;
 export type Records = { authors: Author[]; posts: Post[] };
 
-// Row validation cannot enforce cross-record SQL constraints.
+/**
+ * Parse both collections, reject duplicate IDs and dangling author references,
+ * and return records sorted by numeric ID. Date strings normalize to Date.
+ * Cross-record checks supplement the constraints that row schemas cannot enforce.
+ */
 export function validateRecords(input: { authors: unknown[]; posts: unknown[] }): Records {
   const records = {
     authors: input.authors.map((row) => authorSchema.parse(row)),

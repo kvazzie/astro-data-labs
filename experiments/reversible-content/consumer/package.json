@@ -1,0 +1,8 @@
+{
+  "name": "@astro-data-labs/reversible-content-consumer",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "query": "node query.mjs" },
+  "dependencies": { "@libsql/client": "0.18.0" }
+}

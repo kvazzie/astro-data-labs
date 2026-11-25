@@ -41,7 +41,7 @@
             <p class="eyebrow">Questions you can run</p>
             <h2 id="experiments-title">Experiment index</h2>
           </div>
-          <span class="index-count">01 Experiment</span>
+          <span class="index-count">02 Experiments</span>
         </div>
         <p class="section-intro">Independent, forkable projects with code, an observable result, and documented limits. An Experiment's status describes its investigation, not its production readiness.</p>
 
@@ -69,6 +69,29 @@
             <a href="https://github.com/kvazzie/astro-data-labs/tree/main/experiments/duckdb-content-inspector">Documentation and code <span aria-hidden="true">↗</span></a>
           </div>
         </article>
+        <article class="experiment" aria-labelledby="reversible-title">
+          <div class="experiment-heading">
+            <p class="eyebrow">Content collections / Reversible inputs</p>
+            <span class="status">Exploring</span>
+          </div>
+          <h3 id="reversible-title">Reversible content</h3>
+          <p class="question">Can Drizzle-derived validation preserve records between database-backed Astro collections and local files, with a SQLite export for a sibling project?</p>
+          <p>A terminal demonstration of two input routes, actual conversion between SQLite and JSON files, and a sibling SQL query against a build-time export.</p>
+          <dl class="experiment-notes">
+            <div>
+              <dt>Observable result</dt>
+              <dd>Two authors and three posts retain their IDs, values, and references through the round trip. Checks demonstrate validation failures, source edits, and stale-export detection.</dd>
+            </div>
+            <div>
+              <dt>Current limits</dt>
+              <dd>The fixture needs explicit date and JSON adapters. Files do not preserve database allocation history or constraints. Export freshness requires a current source digest; no live synchronization is provided.</dd>
+            </div>
+          </dl>
+          <div class="experiment-links">
+            <a class="primary-link" href="https://github.com/kvazzie/astro-data-labs/tree/main/experiments/reversible-content#run-it">Run instructions <span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/kvazzie/astro-data-labs/tree/main/experiments/reversible-content">Documentation and code <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
         <p class="index-note">Experiments are peers, not ranked recommendations. They can be Exploring, Concluded, Graduated, or Archived. <a href="https://github.com/kvazzie/astro-data-labs#browse-the-experiment-index">Read the status definitions.</a></p>
       </section>
 
@@ -76,7 +99,7 @@
         <p class="eyebrow">Bring a question or an observation</p>
         <h2 id="contribute-title">Take part in the Lab</h2>
         <p class="section-intro">Propose an Experiment before substantial work, share a working approach in a pull request, or start with a discussion. Explain the problem, the evidence, and the limits.</p>
-        <p>Follow selected work in the <a href="https://github.com/users/kvazzie/projects/5/views/2">Lab Roadmap Project</a>. Requests remain ordinary Issues until maintainers select them into the Lab Roadmap. Read the <a href="https://github.com/kvazzie/astro-data-labs/issues/18">Experiment request about Drizzle, Content Collections, and SQLite</a> and join its discussion.</p>
+        <p>Follow selected work in the <a href="https://github.com/users/kvazzie/projects/5/views/2">Lab Roadmap Project</a>. Requests remain ordinary Issues until maintainers select them into the Lab Roadmap. Read the <a href="https://github.com/kvazzie/astro-data-labs/tree/main/experiments/reversible-content">Reversible content Experiment</a> for the observations from request #18.</p>
         <div class="contribution-grid">
           <a class="contribution" href="https://github.com/kvazzie/astro-data-labs/issues/new?template=experiment_request.yml">
             <h3>Experiment request <span aria-hidden="true">↗</span></h3>
